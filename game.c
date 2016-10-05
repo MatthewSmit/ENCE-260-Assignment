@@ -1,8 +1,11 @@
 #include "system.h"
 #include "display_controller.h"
 #include "led_controller.h"
+#include "nav_controller.h"
 #include "scheduler.h"
 #include "communication.h"
+#include "tinygl.h"
+#include "navswitch.h"
 #include <stddef.h>
 
 typedef enum {
@@ -12,9 +15,16 @@ typedef enum {
 	END
 } State;
 
-State currentState = Menu;
+typedef enum {
+	RESULT_TIE,
+	RESULT_LOSE,
+	RESULT_WIN
+} GameResult;
+
+State currentState = MENU;
 
 void start(void) {
+	currentState = MENU;
 	tinygl_text("< = >");
 }
 
@@ -22,49 +32,49 @@ void choosing(void){
 	/* use a number to determine choice*/
 }
 
-void show_result(int result) {
-	if (result == 0) {
-		tinygl_text("Tie");
+void show_result(GameResult result) {
+	switch (result)
+	{
+		case RESULT_TIE:
+			tinygl_text("Tie");
+			break;
+		case RESULT_LOSE:
+			tinygl_text("You Lose");
+			break;
+		case RESULT_WIN:
+			tinygl_text("You Win");
+			break;
 	}
-	
-	if (result == 1) {
-		tinygl_text("You Lose");
-	}
-	
-	if (result == 2) {
-		tinygl_text("You Win");
-	}
-	
 }
 
 void result_compare(char player, char opponent) {
 	if (player == opponent) {
-		show_result(0);
+		show_result(RESULT_TIE);
 	}
 	
 	else if (player == PAPER) {
-		if(opponent = ROCK) {
-			show_result(2);
+		if (opponent == ROCK) {
+			show_result(RESULT_WIN);
 		}
 		else if (opponent == SCISSORS) {
-			show_result(1);
+			show_result(RESULT_LOSE);
 		}
 	}
 	else if (player == ROCK) {
-		if(opponent = SCISSORS) {
-			show_result(2);
+		if (opponent == SCISSORS) {
+			show_result(RESULT_WIN);
 		}
 		else if (opponent == PAPER) {
-			show_result(1);
+			show_result(RESULT_LOSE);
 		}
 	}
 	
 	else if (player == SCISSORS) {
-		if(opponent = PAPER) {
-			show_result(2);
+		if (opponent == PAPER) {
+			show_result(RESULT_WIN);
 		}
 		else if (opponent == ROCK) {
-			show_result(1);
+			show_result(RESULT_LOSE);
 		}
 	}
 	
@@ -74,6 +84,7 @@ static void menu_update(void)
 {
 	if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
 		choosing();
+	}
 }
 
 static void game_update(void)
@@ -85,8 +96,6 @@ static void game_update(void)
 			break;
 	}
 }
-
-
 
 task* init_game(void)
 {
@@ -105,7 +114,7 @@ int main(void)
 	
 	task* tasks[] =
 	{
-		init_navswitch(),
+		init_navswitch_controller(),
 		init_display_controller(),
 		init_led_controller(),
 		init_game(),

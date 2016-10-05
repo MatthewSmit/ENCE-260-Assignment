@@ -1,6 +1,6 @@
 #include "display_controller.h"
 #include "tinygl.h"
-#include "../fonts/font5x7_1.h"
+#include "font5x7_1.h"
 
 #define MESSAGE_RATE 20
 

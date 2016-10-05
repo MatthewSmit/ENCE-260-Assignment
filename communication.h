@@ -14,6 +14,7 @@ typedef enum {
 #define SCISSORS '>'
 #define ROCK '<'
 
+void communication_initialise(void);
 void send_type(char type);
 void send_confirmation(void);
 Result get_result(void);

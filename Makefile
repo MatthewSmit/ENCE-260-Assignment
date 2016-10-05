@@ -25,10 +25,16 @@ scheduler.o: scheduler.c
 display_controller.o: display_controller.c
 	$(CC) -c $(CFLAGS) $< -o $@
 	
+nav_controller.o: nav_controller.c
+	$(CC) -c $(CFLAGS) $< -o $@
+	
 led_controller.o: led_controller.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 display.o: ../../drivers/display.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+navswitch.o: ../../drivers/navswitch.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 led.o: ../../drivers/led.c
@@ -49,7 +55,7 @@ font.o: ../../utils/font.c
 
 
 # Link: create ELF output file from object files.
-game.out: game.o display.o led.o ledmat.o system.o scheduler.o display_controller.o led_controller.o tinygl.o font.o
+game.out: game.o display.o led.o ledmat.o system.o scheduler.o display_controller.o led_controller.o tinygl.o font.o nav_controller.o navswitch.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

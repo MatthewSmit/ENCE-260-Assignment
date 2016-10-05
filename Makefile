@@ -40,10 +40,16 @@ ledmat.o: ../../drivers/ledmat.c
 system.o: ../../drivers/avr/system.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
+tinygl.o: ../../utils/tinygl.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+font.o: ../../utils/font.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 
 
 # Link: create ELF output file from object files.
-game.out: game.o display.o led.o ledmat.o system.o scheduler.o display_controller.o led_controller.o
+game.out: game.o display.o led.o ledmat.o system.o scheduler.o display_controller.o led_controller.o tinygl.o font.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

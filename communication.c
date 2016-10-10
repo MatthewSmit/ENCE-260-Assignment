@@ -1,3 +1,10 @@
+/**
+ @file communication.c
+ @author Matthew Smit, mjs351  & Joseph Hill, jhi56
+ @date 10/10/16
+ @brief controls the processes that happen between the two MCPs
+ */
+
 #include "communication.h"
 #include "ir_serial.h"
 #include <stdbool.h>
@@ -59,11 +66,13 @@ void communication_reset(void)
 	opponent_character = 0;
 	recieved_ack = false;
 }
+
 // Sets the character type for the communcation manager to send to opponent
 void communication_set_type(char type)
 {
 	our_character = type;
 }
+
 // Returns the opponent character or null
 char communication_get_opponent(void)
 {

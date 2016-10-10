@@ -1,3 +1,10 @@
+/**
+ @file game.c
+ @author Matthew Smit, mjs351  & Joseph Hill, jhi56
+ @date 10/10/16
+ @brief Main ame file for a PSR game
+ */
+
 #include "system.h"
 #include "display_controller.h"
 #include "nav_controller.h"
@@ -93,7 +100,7 @@ static void choosing(void)
 {
 	currentState = GAME_CHOOSING;
 	currentSelection = '<';
-	communication_reset();
+	
 	tinygl_char(currentSelection);
 }
 
@@ -117,12 +124,13 @@ static void show_result(GameResult result)
 			tinygl_text("Tie");
 			break;
 		case RESULT_LOSE:
-			tinygl_text("You Lose");
+			tinygl_text("Lose");
 			break;
 		case RESULT_WIN:
-			tinygl_text("You Win");
+			tinygl_text("Win");
 			break;
 	}
+	communication_reset();
 }
 
 //Update function for menu state
@@ -133,6 +141,7 @@ static void menu_update(void)
 		choosing();
 	}
 }
+
 //Update function for choosing state
 static void choosing_update(void)
 {
@@ -156,6 +165,7 @@ static void choosing_update(void)
 		led_set(LED1, true);
 	}
 }
+
 //Update function for waiting state
 static void waiting_update(void)
 {

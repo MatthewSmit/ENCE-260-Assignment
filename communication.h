@@ -1,3 +1,10 @@
+/**
+ @file communication.h
+ @author Matthew Smit, mjs351  & Joseph Hill, jhi56
+ @date 10/10/16
+ @brief header file for communication
+ */
+
 #pragma once
 #include "scheduler.h"
 

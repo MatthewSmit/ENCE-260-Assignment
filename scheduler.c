@@ -12,7 +12,8 @@
 static task** my_tasks;
 static int number_tasks;
 
-void scheduler_run(void)
+// Function called every tick to process tasks
+static void scheduler_run(void)
 {
 	for (int i = 0; i < number_tasks; i++)
 	{
@@ -29,6 +30,7 @@ void scheduler_run(void)
 	TCNT1 = 0;
 }
 
+// starts scheduler, tasks is in null terminated array of task pointers
 void scheduler_init(task** tasks)
 {
 	my_tasks = tasks;
@@ -43,6 +45,7 @@ void scheduler_init(task** tasks)
 		tasks[i]->tick = 0;
 	}
 	
+	// Initialise timer setting the clock divisor to 64
 	TCCR1A = 0;
 	TCCR1B = 3;
 	TCCR1C = 0;

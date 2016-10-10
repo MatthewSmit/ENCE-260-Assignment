@@ -1,35 +1,73 @@
 #include "communication.h"
 #include "ir_serial.h"
+#include <stdbool.h>
 
-void communication_initialise(void)
+// Used to acknowledge that they have recieved our character
+#define ACK 'X'
+
+static char our_character;
+static char opponent_character;
+static bool recieved_ack;
+
+static void comm_run(void)
 {
-	ir_serial_init();
-}
-void send_type(char type)
-{
-	if (type == ROCK || type == SCISSORS || type == PAPER)
-		ir_serial_transmit(type);
-}
-void send_confirmation(void)
-{
-	ir_serial_transmit('X');
-}
-Result get_result(void)
-{
+	// Only send every 100ms to prevent lag
+	static int timer = 0;
+	if (timer++ >= 100)
+	{
+		if (our_character != 0)
+			ir_serial_transmit(our_character);
+		timer = 0;
+	}
+	
+	// Process data if it exists
 	uint8_t data;
 	ir_serial_ret_t result = ir_serial_receive(&data);
-	if (result != IR_SERIAL_OK)
-		return RESULT_NONE;
-		
-	switch (data)
+	if (result == IR_SERIAL_OK)
 	{
-		case ROCK:
-			return RESULT_ROCK;
-		case SCISSORS:
-			return RESULT_SCISSORS;
-		case PAPER:
-			return RESULT_PAPER;
-		default:
-			return RESULT_NONE;
+		switch (data)
+		{
+			case ROCK:
+			case SCISSORS:
+			case PAPER:
+				opponent_character = data;
+				ir_serial_transmit(ACK);
+				break;
+			case ACK:
+				recieved_ack = true;
+				break;
+		}
 	}
+}
+
+task* communication_initialise(void)
+{
+	ir_serial_init();
+	
+	static task comm_task;
+	
+	comm_task.run = comm_run;
+	comm_task.period = 1;
+	
+	return &comm_task;
+}
+
+// Resets communication to reset internal state
+void communication_reset(void)
+{
+	our_character = 0;
+	opponent_character = 0;
+	recieved_ack = false;
+}
+// Sets the character type for the communcation manager to send to opponent
+void communication_set_type(char type)
+{
+	our_character = type;
+}
+// Returns the opponent character or null
+char communication_get_opponent(void)
+{
+	if (opponent_character != 0 && recieved_ack)
+		return opponent_character;
+	return 0;
 }

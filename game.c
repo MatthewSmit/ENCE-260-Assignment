@@ -2,7 +2,7 @@
  @file game.c
  @author Matthew Smit, mjs351  & Joseph Hill, jhi56
  @date 10/10/16
- @brief Main ame file for a PSR game
+ @brief Main game file for a PSR game
  */
 
 #include "system.h"

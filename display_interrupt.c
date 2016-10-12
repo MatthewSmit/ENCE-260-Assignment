@@ -1,5 +1,5 @@
-/** @file   display2.c
-    @author Matthew Smit
+/** @file   display_interrupt.c
+    @author M. P. Hayes, UCECE; Matthew Smit
     @date   11/10/16
     @brief  Bit-mapped display driver, using interrupts.
 */

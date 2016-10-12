@@ -1,5 +1,5 @@
-/** @file   ledmat2.c
-    @author Matthew Smit
+/** @file   ledmat_interrupt.c
+    @author M. P. Hayes, UCECE; Matthew Smit
     @date   11/10/16
     @brief  LED matrix driver.
 */

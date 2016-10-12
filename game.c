@@ -92,7 +92,7 @@ static void start(void)
 {
 	currentState = MENU;
 	tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
-	tinygl_text("Welcome to < = >! Press to start");
+	tinygl_text("Welcome to < = >!");
 }
 
 // Sets state to choosing a character

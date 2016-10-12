@@ -22,10 +22,10 @@ game.o: game.c
 scheduler.o: scheduler.c
 	$(CC) -c $(CFLAGS) $< -o $@
 	
-display2.o: display2.c
+display_interrupt.o: display_interrupt.c
 	$(CC) -c $(CFLAGS) $< -o $@
 	
-ledmat2.o: ledmat2.c
+ledmat_interrupt.o: ledmat_interrupt.c
 	$(CC) -c $(CFLAGS) $< -o $@
 	
 display_controller.o: display_controller.c
@@ -61,7 +61,7 @@ font.o: ../../utils/font.c
 
 
 # Link: create ELF output file from object files.
-game.out: game.o display2.o led.o ledmat2.o system.o scheduler.o display_controller.o tinygl.o font.o nav_controller.o navswitch.o communication.o ir.o ir_serial.o
+game.out: game.o display_interrupt.o led.o ledmat_interrupt.o system.o scheduler.o display_controller.o tinygl.o font.o nav_controller.o navswitch.o communication.o ir.o ir_serial.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
